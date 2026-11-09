@@ -1,0 +1,32 @@
+name: Bug report
+description: Something in FigmaMCP does not work
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: Tell us what you did and what you saw. Do not include private design content.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: FigmaMCP version
+      placeholder: "0.1.0"
+  - type: dropdown
+    id: agent
+    attributes:
+      label: AI tool
+      options: [Claude Code, Codex, Other]
+  - type: input
+    id: macos
+    attributes:
+      label: macOS version and chip
+      placeholder: "macOS 26, Apple silicon"

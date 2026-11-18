@@ -1,0 +1,46 @@
+name: Publish to MCP Registry
+
+# Publishes the release's server.json asset to registry.modelcontextprotocol.io.
+# Auth is GitHub OIDC (namespace io.github.MrCoder), so no device code is needed.
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag whose server.json to publish (e.g. v0.1.17)"
+        required: true
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.event.release.tag_name || inputs.tag }}
+      GH_TOKEN: ${{ github.token }}
+      PUBLISHER_VERSION: v1.8.9
+    steps:
+      - name: Download server.json from the release
+        run: gh release download "$TAG" -R "$GITHUB_REPOSITORY" -p server.json -D .
+      - name: Check version matches tag
+        run: |
+          v=$(jq -r .version server.json)
+          test "v$v" = "$TAG" || { echo "server.json version $v does not match $TAG"; exit 1; }
+      - name: Install mcp-publisher
+        run: |
+          curl -sSfL "https://github.com/modelcontextprotocol/registry/releases/download/${PUBLISHER_VERSION}/mcp-publisher_linux_amd64.tar.gz" | tar xz mcp-publisher
+          ./mcp-publisher --version
+      - name: Log in (GitHub OIDC)
+        run: ./mcp-publisher login github-oidc
+      - name: Publish
+        run: |
+          set +e
+          out=$(./mcp-publisher publish 2>&1); code=$?
+          echo "$out"
+          if [ $code -ne 0 ] && echo "$out" | grep -qi "duplicate\|already exists"; then
+            echo "Version already in the registry; nothing to do."; exit 0
+          fi
+          exit $code

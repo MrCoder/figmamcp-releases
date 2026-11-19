@@ -8,7 +8,7 @@ The user sets an editable scope when the plugin connects. A successful command c
 
 | Axis | What it governs |
 |---|---|
-| **Node Scope** | Which nodes you can create, modify, or delete. a connection without a Page/Layer link edits the **whole file** (`editableScopeType: "document"`); pages themselves and the document root still cannot be deleted, moved, cloned or used as a parent. Only turning off the plugin's **AI can edit this file** switch makes it node read-only, and then any node mutation fails with `READ_ONLY_MODE`. |
+| **Node Scope** | Which nodes you can create, modify, or delete. A connection without a Page/Layer link edits the **whole file** (`editableScopeType: "document"`); pages themselves and the document root still cannot be deleted, moved or cloned. A page can be the parent of a new frame. Only turning off the plugin's **AI can edit this file** switch makes it node read-only, and then any node mutation fails with `READ_ONLY_MODE`. |
 | **Variables** | Whether you can create, modify, or delete Local Variables. If disabled, variable mutations fail with `VARIABLE_EDITS_DISABLED`. |
 | **Styles** | Whether you can create, modify, or delete Local Styles. If disabled, style mutations fail with `STYLE_EDITS_DISABLED`. |
 

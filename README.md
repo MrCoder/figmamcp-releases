@@ -22,6 +22,24 @@ FigmaMCP works through Figma's Plugin API on your own machine. It makes no calls
 - Edit fills, strokes, effects, corner radius, auto layout, text and layer structure.
 - Manage your design system: styles, variables, variable bindings, component properties and instance overrides.
 
+## AI skills
+
+Skills are short instruction files that teach an AI agent how to do one Figma task well with FigmaMCP. They are in [`skills/`](skills/):
+
+| Skill | What it does |
+|---|---|
+| [`figma-spec-to-frames`](skills/figma-spec-to-frames/SKILL.md) | Builds a screen from a written spec as auto-layout frames with named layers, then exports a PNG to check it. |
+| [`figma-rename-layers`](skills/figma-rename-layers/SKILL.md) | Renames a frame's layers clearly and consistently, after you approve the list. |
+| [`figma-handoff-notes`](skills/figma-handoff-notes/SKILL.md) | Reads a frame's layout, type, colors, styles and tokens, and writes Figma annotations plus a handoff summary. |
+| [`figmamcp`](skills/figmamcp/SKILL.md) | The base skill: the plugin's safety rules, error codes and how to pick a tool. |
+
+**Install:** copy a skill's folder into your agent's skills folder, then start a new agent session.
+
+- Claude Code: `~/.claude/skills/<skill-name>/` (for one project only: `.claude/skills/<skill-name>/` in that project)
+- Codex: `~/.codex/skills/<skill-name>/`
+
+The FigmaMCP app already installs and updates the `figmamcp` skill for Claude Code and Codex, so you only need to copy the task skills. Each task skill needs FigmaMCP running with the plugin open in your file.
+
 ## Supported agents
 
 | Agent | Status |
@@ -45,7 +63,7 @@ FigmaMCP works through Figma's Plugin API on your own machine. It makes no calls
 
 ## Privacy
 
-Design content never leaves your Mac. The plugin sends only a random install ID and anonymous tool-call counts; no file names or design content. Details: [figmamcp.dev/privacy](https://figmamcp.dev/privacy).
+FigmaMCP itself sends no design content anywhere. The plugin sends only a random install ID and anonymous tool-call counts; no file names or design content. Your AI agent does send what it reads from your file to its own model provider, under that provider's terms, so choose your agent with that in mind. Details: [figmamcp.dev/privacy](https://figmamcp.dev/privacy).
 
 ## Report a problem
 
@@ -53,6 +71,6 @@ Design content never leaves your Mac. The plugin sends only a random install ID 
 
 ## About this repository
 
-This repository holds downloads and issue reports. It has no source code. Downloads are on the [Releases page](https://github.com/MrCoder/figmamcp-releases/releases).
+This repository holds downloads, issue reports and the AI skills in `skills/`. It has no source code. Downloads are on the [Releases page](https://github.com/MrCoder/figmamcp-releases/releases).
 
 FigmaMCP is a fork of [figma-edit-mcp](https://github.com/neozhehan/figma-edit-mcp) by Neo Product LLC. It includes third-party software; see [THIRD_PARTY_NOTICES.txt](THIRD_PARTY_NOTICES.txt). Not affiliated with or endorsed by Figma, Inc.

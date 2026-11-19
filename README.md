@@ -31,6 +31,7 @@ Skills are short instruction files that teach an AI agent how to do one Figma ta
 | [`figma-spec-to-frames`](skills/figma-spec-to-frames/SKILL.md) | Builds a screen from a written spec as auto-layout frames with named layers, then exports a PNG to check it. |
 | [`figma-rename-layers`](skills/figma-rename-layers/SKILL.md) | Renames a frame's layers clearly and consistently, after you approve the list. |
 | [`figma-handoff-notes`](skills/figma-handoff-notes/SKILL.md) | Reads a frame's layout, type, colors, styles and tokens, and writes Figma annotations plus a handoff summary. |
+| [`figma-design-qa`](skills/figma-design-qa/SKILL.md) | Scores a frame against a written rubric, fixes the weakest categories, and repeats until it reaches 9 out of 10 or the round limit. |
 | [`figmamcp`](skills/figmamcp/SKILL.md) | The base skill: the plugin's safety rules, error codes and how to pick a tool. |
 
 **Install:** copy a skill's folder into your agent's skills folder, then start a new agent session.

@@ -2,28 +2,33 @@
 
 **Let Claude Code or Codex read and edit the Figma file you already have open.** A free Mac app with a local MCP server and a Figma plugin. No Figma API token, and no call quota to watch.
 
+![FigmaMCP: an AI agent edits a live Figma file](https://figmamcp.dev/assets/figmamcp-agent-editing.webp)
+
 **[Download for Mac](https://figmamcp.dev/download)** · [Website](https://figmamcp.dev) · [Setup guide](https://figmamcp.dev/docs/setup)
 
-![FigmaMCP demo: download, set up, then Claude Code draws a pricing card in the open Figma file](demo.gif)
+## Install in 3 steps
 
-*The terminal text in the demo is staged. The Figma frames are real screenshots.*
-
-## How it works
-
-1. **Download and open the app.** It checks for Figma, Claude Code and Codex.
+1. **Download and open the app** from [figmamcp.dev/download](https://figmamcp.dev/download). It is notarized for macOS and checks for Figma, Claude Code and Codex.
 2. **Click through the checklist.** The app adds the plugin to the Figma desktop app and connects the MCP server to your AI. There is no manifest to import and no config file to edit.
 3. **Ask your AI.** Open a Figma file and ask for a change. The AI reads the file first, then edits it in place while you watch.
 
 FigmaMCP works through Figma's Plugin API on your own machine. It makes no calls to Figma's hosted MCP server.
 
-## What the AI can do
+## What it can do
 
-| Area | Tools |
+- Read pages, layers, styles, variables, components, annotations and prototype reactions.
+- Export a layer as an image so the AI can check its own work.
+- Create frames, text, shapes, SVG, components and instances.
+- Edit fills, strokes, effects, corner radius, auto layout, text and layer structure.
+- Manage your design system: styles, variables, variable bindings, component properties and instance overrides.
+
+## Supported agents
+
+| Agent | Status |
 |---|---|
-| Read | `page_info`, `node_info`, `node_export_visual`, `component_list`, `style_list`, `variable_list`, `annotation_list`, `reaction_list` |
-| Create | `create_frame`, `create_text`, `create_shape`, `create_svg`, `create_component`, `create_component_set`, `create_instance` |
-| Edit | `node_set_fill`, `node_set_stroke`, `node_set_effects`, `node_set_corner_radius`, `node_set_auto_layout`, `node_transform`, `node_rename`, `node_clone`, `node_group`, `node_delete`, `text_set_content`, `text_set_style` |
-| Design system | `style_manage`, `variable_manage`, `node_bind_variable`, `node_apply_style`, `component_manage_property`, `instance_set_property`, `instance_set_overrides` |
+| Claude Code | Tested |
+| Codex | Tested |
+| Cursor | Works with MCP; not yet tested by us |
 
 ## Safety
 
@@ -37,6 +42,10 @@ FigmaMCP works through Figma's Plugin API on your own machine. It makes no calls
 - macOS (Windows and Linux are not supported yet)
 - The Figma desktop app
 - Claude Code or Codex
+
+## Privacy
+
+Design content never leaves your Mac. The plugin sends only a random install ID and anonymous tool-call counts; no file names or design content. Details: [figmamcp.dev/privacy](https://figmamcp.dev/privacy).
 
 ## Report a problem
 

@@ -14,6 +14,26 @@
 
 FigmaMCP works through Figma's Plugin API on your own machine. It makes no calls to Figma's hosted MCP server.
 
+## Or let your agent install it
+
+Paste this into Claude Code or Codex on your Mac. The agent downloads and installs FigmaMCP, asks you to open the plugin in Figma and to restart it once, then makes one small edit. Needs macOS 14 or later and the Figma desktop app. The same prompt is on the [setup page](https://figmamcp.dev/docs/setup#agent-setup).
+
+```text
+Install FigmaMCP on this Mac, then make one small edit in my open Figma file. Use only the commands below, and ask me before anything else.
+
+1. Check that `sw_vers -productVersion` is 14 or later and that /Applications/Figma.app exists. If not, stop and tell me.
+2. Download and install the app:
+   curl -fL -o /tmp/FigmaMCP.dmg https://github.com/MrCoder/figmamcp-releases/releases/latest/download/FigmaMCP.dmg
+   hdiutil detach /tmp/figmamcp-dmg 2>/dev/null; hdiutil attach -nobrowse -readonly -mountpoint /tmp/figmamcp-dmg /tmp/FigmaMCP.dmg
+   pgrep -x FigmaMCP && osascript -e 'quit app "FigmaMCP"'
+   rm -rf /Applications/FigmaMCP.app && ditto /tmp/figmamcp-dmg/FigmaMCP.app /Applications/FigmaMCP.app
+   hdiutil detach /tmp/figmamcp-dmg
+3. Run /Applications/FigmaMCP.app/Contents/Resources/bin/figmamcp setup and read its output. Exit code 3 means a step still needs doing. If Figma has never been opened, ask me to open it once, then run setup again. If Figma must restart, ask me before you run setup --restart-figma.
+4. Ask me to open a file in the Figma desktop app and run Plugins > Development > FigmaMCP. Then run figmamcp doctor from the same folder until it exits 0.
+5. Ask me to restart you so you load the figmamcp tools: quit, run claude --continue (Claude Code) or codex resume --last (Codex), and type "continue".
+6. Call figmamcp's page_info, then create_text with "Hello from FigmaMCP" on the current page, using the page id and exact name from page_info. If the edit is refused because editing is off, ask me to turn on "AI can edit this file" in the plugin.
+```
+
 ## What it can do
 
 - Read pages, layers, styles, variables, components, annotations and prototype reactions.

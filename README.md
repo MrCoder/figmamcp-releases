@@ -92,6 +92,6 @@ FigmaMCP itself sends no design content anywhere. The plugin sends only a random
 
 ## About this repository
 
-This repository holds downloads, issue reports and the AI skills in `skills/`. It has no source code. Downloads are on the [Releases page](https://github.com/MrCoder/figmamcp-releases/releases).
+This repository holds downloads, issue reports and the AI skills in `skills/`. The source code is at [MrCoder/figmamcp](https://github.com/MrCoder/figmamcp) (MIT). Downloads are on the [Releases page](https://github.com/MrCoder/figmamcp-releases/releases).
 
 FigmaMCP is a fork of [figma-edit-mcp](https://github.com/neozhehan/figma-edit-mcp) by Neo Product LLC. It includes third-party software; see [THIRD_PARTY_NOTICES.txt](THIRD_PARTY_NOTICES.txt). Not affiliated with or endorsed by Figma, Inc.

@@ -26,7 +26,7 @@ Never send `""` for a field that assigns a user-visible name. The server and plu
 - Omit optional creator/group names or `CREATE_COLLECTION.modeName` to accept the native default.
 - Omit optional style/variable update `name` or component-property EDIT `newPropertyName` to leave the existing name unchanged.
 
-Do not apply those omission rules to lookup/verification inputs. Read the current lookup name and pass it back verbatim.
+Do not apply those omission rules to lookup/verification inputs. Read the current lookup name and pass it back verbatim; C9's present-empty decision is limited to the protected `parentNodeName` paths.
 
 ---
 
@@ -101,6 +101,7 @@ When applying variables, certain properties require the node to be in a specific
 1. **Auto-layout properties** (`paddingLeft`, `itemSpacing`, etc.):
    - **Prerequisite:** The node must have auto-layout enabled.
    - **Action:** If the node is a standard `FRAME`, use `node_set_auto_layout` first (e.g., `layoutMode: "HORIZONTAL"`), then call `node_bind_variable`.
+   - **Padding default:** a new auto-layout frame starts with 10 px padding. When you create or configure auto layout, always pass all four paddings (0 when none is wanted) to `create_frame` or `node_set_auto_layout`.
 2. **Color properties** (`fills`, `strokes`):
    - **Prerequisite:** To bind a color token to a fill, the node must either have **zero** fills, or one/multiple **solid** fills. You cannot bind a token to an image or gradient fill directly.
    - **Action:** If the node has an image fill, clear it first using `node_set_fill {clear:true}`. Once empty, binding a color variable will auto-create a bound solid paint.
@@ -192,7 +193,7 @@ For every accepted batch, treat `status: "partial_success"` as incomplete and ha
 4. reaction_list({ nodeIds: [nodeId] })                → verify the resulting metadata
 ```
 
-There is no connector-template discovery or automatic connector-diagram workflow. Native reaction reads and whole-array updates are the supported same-file surface.
+v2.3.3 provides no connector-template discovery or automatic connector-diagram workflow. Native reaction reads and whole-array updates are the supported same-file surface; lossless read coverage and state-safe localized updates are deferred to v2.3.4.
 
 ### Set effects without silent field loss
 
@@ -217,3 +218,32 @@ For replacing many text nodes safely, work in verifiable chunks rather than one 
 6. **Final pass** — export the whole frame at a reduced scale to check cross-chunk consistency.
 
 Scale exports down as chunks grow (≈1.0 for a few nodes, 0.3–0.5 for large groups) to keep responses small.
+
+### Visual self-check loop (design QA)
+
+Use this after you build or change a frame, or when the user asks you to QA or polish one. It scores the frame, fixes the worst problems, and checks again. The `figma-design-qa` skill holds the full rubric (`skills/figma-design-qa/references/rubric.md`) and the `/tutorials/design-qa-figma-file` tutorial describes the same loop for users. Writes stay inside the target frame.
+
+The six categories, each scored 0–10: **Alignment**, **Spacing**, **Type scale**, **Contrast**, **Naming**, **Auto-layout**. A category passes at 9 or more.
+
+```
+1. node_export_visual({ nodeId: frameId, format: "PNG", scale: 0.5 })
+                                                       → look at the result (target node only)
+2. node_info({ nodeIds: [frameId], maxDepth: 3,
+               properties: ["name", "type", "x", "y", "width", "height", "layoutMode",
+                            "itemSpacing", "paddingTop", "paddingRight", "paddingBottom",
+                            "paddingLeft", "fontSize", "fontName", "fills", "boundVariables"] })
+   style_list(...) / variable_list(...)                → what the file's design system offers
+   Score each category from these numbers, not from the picture. Also note values that are
+   hard-coded where a style or variable exists (check `boundVariables` in the node_info result).
+3. Fix the 1–2 lowest categories, names verbatim from step 2:
+     Alignment, Spacing, Auto-layout → node_set_auto_layout (or node_transform)
+     Type scale                      → text_set_style, or node_apply_style with a text style
+     Contrast / hard-coded colour    → node_bind_variable or node_apply_style; node_set_fill if no token exists
+     Naming                          → node_rename (do it last: old names stop verifying)
+4. Export again (step 1) and read node_info again (step 2). Score all six categories,
+   not only the ones you fixed: a layout change can break another category.
+5. Stop when every category is 9 or more, or after the round limit (default 5, as in the rubric), or when a round raises no score.
+   Report one row per round (fix applied, six scores), then what remains and why.
+```
+
+Rules: do not edit outside the frame you named. Do not create styles or variables unless the user asks; bind to the ones that already exist. When you build new screens, the rules come from [design-rules.md](design-rules.md): it uses the same six categories and the rubric's values, and it writes them into the file as variables and styles before drawing, so this loop and the drawing step check against one rule set. If `node_info` and the picture disagree (for example a clipped node), report it instead of scoring it.

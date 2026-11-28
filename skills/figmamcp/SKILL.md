@@ -25,5 +25,6 @@ Load the one you need:
 - **[references/error-playbook.md](references/error-playbook.md)** — every structured error code and its correct recovery.
 - **[references/workflows.md](references/workflows.md)** — the discover-before-acting pattern and canonical recipes (find-and-update text, create-in-frame, edit-by-URL, bulk text replacement).
 - **[references/tool-selection.md](references/tool-selection.md)** — choosing among overlapping tools, `node_info` field selection (fast vs slow), batch vs single, and streaming progress.
+- **[references/design-rules.md](references/design-rules.md)** — read before you build new screens: a starter rule set (spacing scale, type scale, colours with contrast, naming, auto-layout, radius), how to write it into the file as variables and text styles before you draw, and how to use the user's own rule files with a one-frame preview.
 
 The same content is available over the MCP connection as resources under `figmamcp://guide/*`.
